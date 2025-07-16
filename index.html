@@ -1,1 +1,1368 @@
-<h1>Hello</h1>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atma Business - Buat Loker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .app-container {
+            max-width: 375px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        
+        .screen {
+            display: none;
+            padding: 20px;
+            min-height: 100vh;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #2962FF;
+            cursor: pointer;
+            padding: 5px;
+        }
+        
+        .header-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 18px;
+        }
+        
+        .progress-container {
+            background: white;
+            padding: 10px 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e9ecef;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #2962FF;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+        }
+        
+        .profile-section {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2962FF, #1976D2);
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .profile-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .profile-info {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+        
+        .primary-btn {
+            background: #2962FF;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+            transition: all 0.2s ease;
+        }
+        
+        .primary-btn:hover {
+            background: #1976D2;
+            transform: translateY(-1px);
+        }
+        
+        .secondary-btn {
+            background: white;
+            color: #2962FF;
+            border: 2px solid #2962FF;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+        
+        .secondary-btn:hover {
+            background: #f3f6ff;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .empty-illustration {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+        
+        .empty-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .empty-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .welcome-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .welcome-illustration {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #2962FF, #1976D2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 64px;
+        }
+        
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+            line-height: 1.3;
+        }
+        
+        .welcome-subtitle {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .form-section {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.2s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #2962FF;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 16px;
+            background: white;
+            transition: border-color 0.2s ease;
+        }
+        
+        .form-select:focus {
+            outline: none;
+            border-color: #2962FF;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 16px;
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+            transition: border-color 0.2s ease;
+        }
+        
+        .form-textarea:focus {
+            outline: none;
+            border-color: #2962FF;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .skill-tag {
+            background: #e3f2fd;
+            color: #2962FF;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .skill-tag.selected {
+            background: #2962FF;
+            color: white;
+        }
+        
+        .skill-tag:hover {
+            transform: translateY(-1px);
+        }
+        
+        .location-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .location-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            background: white;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .location-btn.active {
+            border-color: #2962FF;
+            color: #2962FF;
+            background: #f3f6ff;
+        }
+        
+        .salary-type-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .salary-type-btn {
+            padding: 12px 8px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            background: white;
+            color: #666;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        
+        .salary-type-btn.active {
+            border-color: #2962FF;
+            color: #2962FF;
+            background: #f3f6ff;
+        }
+        
+        .gender-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .gender-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            background: white;
+            color: #666;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .gender-btn.active {
+            border-color: #2962FF;
+            color: #2962FF;
+            background: #f3f6ff;
+        }
+        
+        .summary-section {
+            padding: 20px;
+        }
+        
+        .summary-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .summary-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .summary-label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .summary-value {
+            color: #666;
+            text-align: right;
+            flex: 1;
+            margin-left: 20px;
+        }
+        
+        .success-section {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        
+        .success-illustration {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+        }
+        
+        .success-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .success-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+        
+        .button-container {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 375px;
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .step-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .step-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #2962FF;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .suggested-skills {
+            margin-top: 15px;
+        }
+
+        .suggested-skills-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 200px;
+            background: #f8f9fa;
+            border: 2px dashed #e9ecef;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Screen 1: Dashboard -->
+        <div class="screen active" id="dashboard">
+            <div class="header">
+                <div></div>
+                <div class="header-title">Atma Business</div>
+                <div>⚙️</div>
+            </div>
+            
+            <div class="profile-section">
+                <div class="profile-avatar">JD</div>
+                <div class="profile-name">John Doe</div>
+                <div class="profile-info">HR Manager • Jakarta, Indonesia</div>
+                
+                <button class="primary-btn" onclick="showScreen('jobPostings')">
+                    📋 Lowongan kerja saya
+                </button>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Loker Aktif</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">45</div>
+                        <div class="stat-label">Kandidat Baru</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 2: Empty State Job Postings -->
+        <div class="screen" id="jobPostings">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('dashboard')">←</button>
+                <div class="header-title">Lowongan Kerja Saya</div>
+                <div></div>
+            </div>
+            
+            <div class="empty-state">
+                <div class="empty-illustration">📄</div>
+                <div class="empty-title">Belum ada loker</div>
+                <div class="empty-subtitle">Mulai buat lowongan kerja pertama Anda dan temukan kandidat terbaik</div>
+                <button class="primary-btn" onclick="showScreen('welcome')">
+                    ➕ Buat Loker
+                </button>
+            </div>
+        </div>
+
+        <!-- Screen 3: Welcome -->
+        <div class="screen" id="welcome">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('jobPostings')">←</button>
+                <div class="header-title">Buat Loker</div>
+                <div></div>
+            </div>
+            
+            <div class="welcome-section">
+                <div class="welcome-illustration">🎯</div>
+                <div class="welcome-title">Buat loker dan dapatkan kandidat siap kerja</div>
+                <div class="welcome-subtitle">Ikuti langkah mudah untuk membuat lowongan kerja yang menarik kandidat terbaik</div>
+                <button class="primary-btn" onclick="startJobCreation()">
+                    Mulai buat loker
+                </button>
+            </div>
+        </div>
+
+        <!-- Screen 4: Position -->
+        <div class="screen" id="position">
+            <div class="header">
+                <button class="back-btn" onclick="previousStep()">←</button>
+                <div class="header-title">Posisi</div>
+                <div></div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 11%"></div>
+                </div>
+                <div class="progress-text">Langkah 1 dari 9</div>
+            </div>
+            
+            <div class="form-section">
+                <div class="step-title">Posisi apa yang ingin direkrut?</div>
+                <div class="step-subtitle">Berikan informasi dasar tentang posisi yang Anda butuhkan</div>
+                
+                <div class="form-group">
+                    <label class="form-label">Judul Posisi *</label>
+                    <input type="text" class="form-input" id="jobTitle" placeholder="Contoh: Marketing Executive, Software Developer">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Jumlah orang yang dibutuhkan *</label>
+                    <input type="number" class="form-input" id="numHires" placeholder="1" min="1" max="100">
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="primary-btn" onclick="nextStep()">Lanjutkan</button>
+            </div>
+        </div>
+
+        <!-- Screen 5: Job Type -->
+        <div class="screen" id="jobType">
+            <div class="header">
+                <button class="back-btn" onclick="previousStep()">←</button>
+                <div class="header-title">Jenis Pekerjaan</div>
+                <div></div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 22%"></div>
+                </div>
+                <div class="progress-text">Langkah 2 dari 9</div>
+            </div>
+            
+            <div class="form-section">
+                <div class="step-title">Kategori pekerjaan</div>
+                <div class="step-subtitle">Pilih kategori yang sesuai dengan posisi</div>
+                
+                <div class="form-group">
+                    <label class="form-label">Kategori *</label>
+                    <select class="form-select" id="jobCategory">
+                        <option value="">Pilih kategori</option>
+                        <option value="teknologi">Teknologi</option>
+                        <option value="marketing">Marketing & Sales</option>
+                        <option value="finance">Finance & Accounting</option>
+                        <option value="hr">Human Resources</option>
+                        <option value="operations">Operations</option>
+                        <option value="customer-service">Customer Service</option>
+                        <option value="design">Design & Creative</option>
+                        <option value="other">Lainnya</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Sub-kategori</label>
+                    <select class="form-select" id="jobSubcategory">
+                        <option value="">Pilih sub-kategori</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Tipe Pekerjaan *</label>
+                    <select class="form-select" id="employmentType">
+                        <option value="">Pilih tipe pekerjaan</option>
+                        <option value="fulltime">Full Time</option>
+                        <option value="parttime">Part Time</option>
+                        <option value="contract">Contract</option>
+                        <option value="freelance">Freelance</option>
+                        <option value="internship">Internship</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="primary-btn" onclick="nextStep()">Lanjutkan</button>
+            </div>
+        </div>
+
+        <!-- Screen 6: Location -->
+        <div class="screen" id="location">
+            <div class="header">
+                <button class="back-btn" onclick="previousStep()">←</button>
+                <div class="header-title">Lokasi</div>
+                <div></div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 33%"></div>
+                </div>
+                <div class="progress-text">Langkah 3 dari 9</div>
+            </div>
+            
+            <div class="form-section">
+                <div class="step-title">Dimana lokasi kerja?</div>
+                <div class="step-subtitle">Tentukan lokasi tempat kandidat akan bekerja</div>
+                
+                <div class="form-group">
+                    <label class="form-label">Kota/Alamat *</label>
+                    <input type="text" class="form-input" id="jobLocation" placeholder="Contoh: Jakarta Selatan">
+                </div>
+                
+                <div class="location-options">
+                    <button class="location-btn active" onclick="selectLocationType('address')">
+                        📍 Alamat Spesifik
+                    </button>
+                    <button class="location-btn" onclick="selectLocationType('remote')">
+                        🏠 Remote
+                    </button>
+                </div>
+                
+                <div class="map-placeholder">
+                    📍 Pilih lokasi di peta
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="primary-btn" onclick="nextStep()">Lanjutkan</button>
+            </div>
+        </div>
+
+        <!-- Screen 7: Salary Range -->
+        <div class="screen" id="salaryRange">
+            <div class="header">
+                <button class="back-btn" onclick="previousStep()">←</button>
+                <div class="header-title">Gaji</div>
+                <div></div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 44%"></div>
+                </div>
+                <div class="progress-text">Langkah 4 dari 9</div>
+            </div>
+            
+            <div class="form-section">
+                <div class="step-title">Berapa gaji yang ditawarkan?</div>
+                <div class="step-subtitle">Tentukan rentang gaji yang kompetitif</div>
+                
+                <div class="form-group">
+                    <label class="form-label">Model Pembayaran *</label>
+                    <div class="salary-type-options">
+                        <button class="salary-type-btn active" onclick="selectSalaryType('monthly')">
+                            💰 Bulanan
+                        </button>
+                        <button class="salary-type-btn" onclick="selectSalaryType('hourly')">
+                            ⏰ Per Jam
+                        </button>
+                        <button class="salary-type-btn" onclick="selectSalaryType('project')">
+                            📋 Per Proyek
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Gaji Minimum *</label>
+                        <input type="number" class="form-input" id="minSalary" placeholder="5000000">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Gaji Maksimum *</label>
+                        <input type="number" class="form-input" id="maxSalary" placeholder="8000000">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Mata Uang</label>
+                    <select class="form-select" id="currency">
+                        <option value="IDR">Indonesian Rupiah (IDR)</option>
+                        <option value="USD">US Dollar (USD)</option>
+                        <option value="SGD">Singapore Dollar (SGD)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="primary-btn" onclick="nextStep()">Lanjutkan</button>
+            </div>
+        </div>
+
+        <!-- Screen 8: Required Skills -->
+        <div class="screen" id="requiredSkills">
+            <div class="header">
+                <button class="back-btn" onclick="previousStep()">←</button>
+                <div class="header-title">Keterampilan</div>
+                <div></div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 55%"></div>
+                </div>
+                <div class="progress-text">Langkah 5 dari 9</div>
+            </div>
+            
+            <div class="form-section">
+                <div class="step-title">Keterampilan yang dibutuhkan</div>
+                <div class="step-subtitle">Pilih keterampilan yang harus dimiliki kandidat</div>
+                
+                <div class="form-group">
+                    <label class="form-label">Keterampilan Wajib</label>
+                    <input type="text" class="form-input" id="skillInput" placeholder="Ketik keterampilan dan tekan Enter">
+                </div>
+                
+                <div class="suggested-skills">
+                    <div class="suggested-skills-label">Saran keterampilan populer:</div>
+                    <div class="skills-container">
+                        <button class="skill-tag" onclick="toggleSkill(this)">Komunikatif</button>
+                        <button class="skill-tag" onclick="toggleSkill(this)">Ramah</button>
+                        <button class="skill-tag" onclick="toggleSkill(this)">Kreatif</button>
+                        <button class="skill-tag" onclick="toggleSkill(this)">Analitis</button>
+                        <button class="skill-tag" onclick="toggleSkill(this)">Teamwork</button>
+                        <button class="skill-tag" onclick="toggleSkill(this)">Leadership</button>
+                        <button class="skill-tag" onclick="toggleSkill(this)">Problem Solving</button>
+                        <button class="skill-tag" onclick="toggleSkill(this)">Time Management</button>
+                        <button class="skill-tag" onclick="toggleSkill(this)">Microsoft Office</button>
+                        <button class="skill-tag" onclick="toggleSkill(this)">Bahasa Inggris</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Keterampilan Terpilih</label>
+                    <div class="skills-container" id="selectedSkills">
+                        <!-- Selected skills will appear here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="primary-btn" onclick="nextStep()">Lanjutkan</button>
+            </div>
+        </div>
+
+        <!-- Screen 9: Experience & Education -->
+        <div class="screen" id="experienceEducation">
+            <div class="header">
+                <button class="back-btn" onclick="previousStep()">←</button>
+                <div class="header-title">Pengalaman & Pendidikan</div>
+                <div></div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 66%"></div>
+                </div>
+                <div class="progress-text">Langkah 6 dari 9</div>
+            </div>
+            
+            <div class="form-section">
+                <div class="step-title">Syarat pengalaman & pendidikan</div>
+                <div class="step-subtitle">Tentukan level pengalaman dan pendidikan minimum</div>
+                
+                <div class="form-group">
+                    <label class="form-label">Pengalaman Kerja *</label>
+                    <select class="form-select" id="experience">
+                        <option value="">Pilih pengalaman</option>
+                        <option value="0">Fresh Graduate / No Experience</option>
+                        <option value="1">1 tahun</option>
+                        <option value="2">2 tahun</option>
+                        <option value="3">3 tahun</option>
+                        <option value="4">4 tahun</option>
+                        <option value="5">5 tahun</option>
+                        <option value="6-10">6-10 tahun</option>
+                        <option value="10+">10+ tahun</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Pendidikan Minimum *</label>
+                    <select class="form-select" id="education">
+                        <option value="">Pilih pendidikan</option>
+                        <option value="smp">SMP</option>
+                        <option value="sma">SMA/SMK</option>
+                        <option value="diploma">Diploma (D1/D2/D3)</option>
+                        <option value="s1">Sarjana (S1)</option>
+                        <option value="s2">Magister (S2)</option>
+                        <option value="s3">Doktor (S3)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Jurusan (Opsional)</label>
+                    <input type="text" class="form-input" id="major" placeholder="Contoh: Teknik Informatika, Manajemen">
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="primary-btn" onclick="nextStep()">Lanjutkan</button>
+            </div>
+        </div>
+
+        <!-- Screen 10: Preferred Candidate -->
+        <div class="screen" id="preferredCandidate">
+            <div class="header">
+                <button class="back-btn" onclick="previousStep()">←</button>
+                <div class="header-title">Preferensi Kandidat</div>
+                <div></div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 77%"></div>
+                </div>
+                <div class="progress-text">Langkah 7 dari 9</div>
+            </div>
+            
+            <div class="form-section">
+                <div class="step-title">Preferensi kandidat</div>
+                <div class="step-subtitle">Tentukan kriteria demografis yang diinginkan (opsional)</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Usia Minimum</label>
+                        <input type="number" class="form-input" id="minAge" placeholder="18" min="16" max="65">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Usia Maksimum</label>
+                        <input type="number" class="form-input" id="maxAge" placeholder="35" min="16" max="65">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Jenis Kelamin</label>
+                    <div class="gender-options">
+                        <button class="gender-btn active" onclick="selectGender('any')">
+                            👥 Tidak ada preferensi
+                        </button>
+                        <button class="gender-btn" onclick="selectGender('male')">
+                            👨 Laki-laki
+                        </button>
+                        <button class="gender-btn" onclick="selectGender('female')">
+                            👩 Perempuan
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Preferensi Lainnya (Opsional)</label>
+                    <input type="text" class="form-input" id="otherPreferences" placeholder="Contoh: Memiliki kendaraan sendiri, bersedia lembur">
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="primary-btn" onclick="nextStep()">Lanjutkan</button>
+            </div>
+        </div>
+
+        <!-- Screen 11: Additional Info -->
+        <div class="screen" id="additionalInfo">
+            <div class="header">
+                <button class="back-btn" onclick="previousStep()">←</button>
+                <div class="header-title">Informasi Tambahan</div>
+                <div></div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 88%"></div>
+                </div>
+                <div class="progress-text">Langkah 8 dari 9</div>
+            </div>
+            
+            <div class="form-section">
+                <div class="step-title">Informasi tambahan</div>
+                <div class="step-subtitle">Tambahkan detail atau benefit yang menarik kandidat</div>
+                
+                <div class="form-group">
+                    <label class="form-label">Deskripsi Pekerjaan</label>
+                    <textarea class="form-textarea" id="jobDescription" placeholder="Jelaskan tanggung jawab, tugas harian, dan apa yang diharapkan dari kandidat..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Benefit & Fasilitas</label>
+                    <textarea class="form-textarea" id="benefits" placeholder="Contoh: BPJS, asuransi kesehatan, bonus tahunan, flexible working hours..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Persyaratan Khusus</label>
+                    <textarea class="form-textarea" id="specialRequirements" placeholder="Contoh: Bersedia bekerja shift, memiliki SIM A, dll..."></textarea>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="primary-btn" onclick="nextStep()">Lanjutkan</button>
+            </div>
+        </div>
+
+        <!-- Screen 12: Summary & Confirmation -->
+        <div class="screen" id="summary">
+            <div class="header">
+                <button class="back-btn" onclick="previousStep()">←</button>
+                <div class="header-title">Ringkasan</div>
+                <div></div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 99%"></div>
+                </div>
+                <div class="progress-text">Langkah 9 dari 9</div>
+            </div>
+            
+            <div class="summary-section">
+                <div class="step-title">Ringkasan lowongan kerja</div>
+                <div class="step-subtitle">Periksa kembali semua informasi sebelum dipublikasi</div>
+                
+                <div class="summary-card">
+                    <div class="summary-item">
+                        <div class="summary-label">Posisi</div>
+                        <div class="summary-value" id="summaryJobTitle">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Jumlah orang</div>
+                        <div class="summary-value" id="summaryNumHires">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Kategori</div>
+                        <div class="summary-value" id="summaryCategory">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Tipe</div>
+                        <div class="summary-value" id="summaryType">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Lokasi</div>
+                        <div class="summary-value" id="summaryLocation">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Gaji</div>
+                        <div class="summary-value" id="summarySalary">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Pengalaman</div>
+                        <div class="summary-value" id="summaryExperience">-</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Pendidikan</div>
+                        <div class="summary-value" id="summaryEducation">-</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button class="primary-btn" onclick="submitJobPosting()">Konfirmasi & Publikasi</button>
+            </div>
+        </div>
+
+        <!-- Screen 13: Success -->
+        <div class="screen" id="success">
+            <div class="header">
+                <div></div>
+                <div class="header-title">Berhasil!</div>
+                <div></div>
+            </div>
+            
+            <div class="success-section">
+                <div class="success-illustration">✅</div>
+                <div class="success-title">Lokermu sudah siap!</div>
+                <div class="success-subtitle">Lowongan kerja telah berhasil dipublikasi. Kandidat dapat melihat dan melamar posisi ini sekarang.</div>
+                
+                <button class="primary-btn" onclick="showScreen('dashboard')">
+                    👥 Lihat kandidat sekarang
+                </button>
+                
+                <button class="secondary-btn" onclick="showScreen('jobPostings')" style="margin-top: 15px;">
+                    📋 Kelola lowongan kerja
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        const steps = ['welcome', 'position', 'jobType', 'location', 'salaryRange', 'requiredSkills', 'experienceEducation', 'preferredCandidate', 'additionalInfo', 'summary'];
+        let jobData = {};
+        let selectedSkills = [];
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function startJobCreation() {
+            currentStep = 0;
+            showScreen(steps[currentStep]);
+        }
+
+        function nextStep() {
+            if (validateCurrentStep()) {
+                saveCurrentStepData();
+                if (currentStep < steps.length - 1) {
+                    currentStep++;
+                    showScreen(steps[currentStep]);
+                    
+                    if (steps[currentStep] === 'summary') {
+                        updateSummary();
+                    }
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                showScreen(steps[currentStep]);
+            } else {
+                showScreen('welcome');
+            }
+        }
+
+        function validateCurrentStep() {
+            const currentScreen = steps[currentStep];
+            
+            switch(currentScreen) {
+                case 'position':
+                    const jobTitle = document.getElementById('jobTitle').value.trim();
+                    const numHires = document.getElementById('numHires').value;
+                    if (!jobTitle || !numHires || numHires < 1) {
+                        alert('Mohon lengkapi semua field yang wajib diisi');
+                        return false;
+                    }
+                    break;
+                    
+                case 'jobType':
+                    const category = document.getElementById('jobCategory').value;
+                    const type = document.getElementById('employmentType').value;
+                    if (!category || !type) {
+                        alert('Mohon lengkapi semua field yang wajib diisi');
+                        return false;
+                    }
+                    break;
+                    
+                case 'location':
+                    const location = document.getElementById('jobLocation').value.trim();
+                    if (!location) {
+                        alert('Mohon lengkapi lokasi kerja');
+                        return false;
+                    }
+                    break;
+                    
+                case 'salaryRange':
+                    const minSalary = document.getElementById('minSalary').value;
+                    const maxSalary = document.getElementById('maxSalary').value;
+                    if (!minSalary || !maxSalary || parseFloat(minSalary) >= parseFloat(maxSalary)) {
+                        alert('Mohon masukkan rentang gaji yang valid');
+                        return false;
+                    }
+                    break;
+                    
+                case 'experienceEducation':
+                    const experience = document.getElementById('experience').value;
+                    const education = document.getElementById('education').value;
+                    if (!experience || !education) {
+                        alert('Mohon lengkapi pengalaman dan pendidikan minimum');
+                        return false;
+                    }
+                    break;
+            }
+            
+            return true;
+        }
+
+        function saveCurrentStepData() {
+            const currentScreen = steps[currentStep];
+            
+            switch(currentScreen) {
+                case 'position':
+                    jobData.jobTitle = document.getElementById('jobTitle').value;
+                    jobData.numHires = document.getElementById('numHires').value;
+                    break;
+                    
+                case 'jobType':
+                    jobData.category = document.getElementById('jobCategory').value;
+                    jobData.subcategory = document.getElementById('jobSubcategory').value;
+                    jobData.employmentType = document.getElementById('employmentType').value;
+                    break;
+                    
+                case 'location':
+                    jobData.location = document.getElementById('jobLocation').value;
+                    break;
+                    
+                case 'salaryRange':
+                    jobData.minSalary = document.getElementById('minSalary').value;
+                    jobData.maxSalary = document.getElementById('maxSalary').value;
+                    jobData.currency = document.getElementById('currency').value;
+                    break;
+                    
+                case 'requiredSkills':
+                    jobData.skills = selectedSkills;
+                    break;
+                    
+                case 'experienceEducation':
+                    jobData.experience = document.getElementById('experience').value;
+                    jobData.education = document.getElementById('education').value;
+                    jobData.major = document.getElementById('major').value;
+                    break;
+                    
+                case 'preferredCandidate':
+                    jobData.minAge = document.getElementById('minAge').value;
+                    jobData.maxAge = document.getElementById('maxAge').value;
+                    jobData.otherPreferences = document.getElementById('otherPreferences').value;
+                    break;
+                    
+                case 'additionalInfo':
+                    jobData.jobDescription = document.getElementById('jobDescription').value;
+                    jobData.benefits = document.getElementById('benefits').value;
+                    jobData.specialRequirements = document.getElementById('specialRequirements').value;
+                    break;
+            }
+        }
+
+        function toggleSkill(button) {
+            const skill = button.textContent;
+            
+            if (button.classList.contains('selected')) {
+                button.classList.remove('selected');
+                selectedSkills = selectedSkills.filter(s => s !== skill);
+            } else {
+                button.classList.add('selected');
+                selectedSkills.push(skill);
+            }
+            
+            updateSelectedSkillsDisplay();
+        }
+
+        function updateSelectedSkillsDisplay() {
+            const container = document.getElementById('selectedSkills');
+            container.innerHTML = '';
+            
+            selectedSkills.forEach(skill => {
+                const tag = document.createElement('button');
+                tag.className = 'skill-tag selected';
+                tag.textContent = skill;
+                tag.onclick = () => removeSkill(skill);
+                container.appendChild(tag);
+            });
+        }
+
+        function removeSkill(skill) {
+            selectedSkills = selectedSkills.filter(s => s !== skill);
+            updateSelectedSkillsDisplay();
+            
+            // Update suggestion buttons
+            document.querySelectorAll('.skill-tag').forEach(button => {
+                if (button.textContent === skill) {
+                    button.classList.remove('selected');
+                }
+            });
+        }
+
+        function selectLocationType(type) {
+            document.querySelectorAll('.location-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function selectSalaryType(type) {
+            document.querySelectorAll('.salary-type-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+
+        function selectGender(gender) {
+            document.querySelectorAll('.gender-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            jobData.gender = gender;
+        }
+
+        function updateSummary() {
+            document.getElementById('summaryJobTitle').textContent = jobData.jobTitle || '-';
+            document.getElementById('summaryNumHires').textContent = jobData.numHires ? `${jobData.numHires} orang` : '-';
+            document.getElementById('summaryCategory').textContent = jobData.category || '-';
+            document.getElementById('summaryType').textContent = jobData.employmentType || '-';
+            document.getElementById('summaryLocation').textContent = jobData.location || '-';
+            
+            if (jobData.minSalary && jobData.maxSalary) {
+                const currency = jobData.currency === 'IDR' ? 'Rp ' : jobData.currency + ' ';
+                document.getElementById('summarySalary').textContent = 
+                    `${currency}${parseInt(jobData.minSalary).toLocaleString()} - ${currency}${parseInt(jobData.maxSalary).toLocaleString()}`;
+            } else {
+                document.getElementById('summarySalary').textContent = '-';
+            }
+            
+            document.getElementById('summaryExperience').textContent = jobData.experience || '-';
+            document.getElementById('summaryEducation').textContent = jobData.education || '-';
+        }
+
+        function submitJobPosting() {
+            // Simulate submission
+            showScreen('success');
+        }
+
+        // Add skill input functionality
+        document.getElementById('skillInput')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && this.value.trim()) {
+                const skill = this.value.trim();
+                if (!selectedSkills.includes(skill)) {
+                    selectedSkills.push(skill);
+                    updateSelectedSkillsDisplay();
+                }
+                this.value = '';
+                e.preventDefault();
+            }
+        });
+
+        // Update subcategory options based on category selection
+        document.getElementById('jobCategory')?.addEventListener('change', function() {
+            const subcategorySelect = document.getElementById('jobSubcategory');
+            subcategorySelect.innerHTML = '<option value="">Pilih sub-kategori</option>';
+            
+            const subcategories = {
+                'teknologi': ['Frontend Developer', 'Backend Developer', 'Mobile Developer', 'UI/UX Designer', 'Data Analyst', 'DevOps Engineer'],
+                'marketing': ['Digital Marketing', 'Content Creator', 'Social Media Specialist', 'SEO Specialist', 'Sales Representative'],
+                'finance': ['Accounting', 'Financial Analyst', 'Tax Specialist', 'Auditor', 'Investment Analyst'],
+                'hr': ['Recruitment', 'Training & Development', 'Compensation & Benefits', 'Employee Relations'],
+                'operations': ['Operations Manager', 'Supply Chain', 'Quality Assurance', 'Project Manager'],
+                'customer-service': ['Customer Support', 'Technical Support', 'Call Center', 'Customer Success'],
+                'design': ['Graphic Designer', 'UI/UX Designer', 'Video Editor', 'Photographer', 'Illustrator']
+            };
+            
+            const options = subcategories[this.value] || [];
+            options.forEach(option => {
+                const optionElement = document.createElement('option');
+                optionElement.value = option.toLowerCase().replace(/\s+/g, '-');
+                optionElement.textContent = option;
+                subcategorySelect.appendChild(optionElement);
+            });
+        });
+    </script>
+</body>
+</html>
